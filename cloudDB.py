@@ -27,7 +27,7 @@ try:
 		'LocationConstraint': 'us-west-2'})
 	print('Bucket successfully created')
 except:
-	print ("Bucket already exists")
+	print ("Bucket might already exist")
 
 
 # Retreive the bucket
@@ -35,10 +35,10 @@ bucket = s3.Bucket("db-hw-bucket-18756895")
 
 # Set bucket to be publicly readable
 response = bucket.Acl().put(ACL='public-read')
-print()
+'''print()
 print(response)
 print()
-response = None
+response = None'''
 
 # Open file to upload in read-binary mode
 body = open('test_upload.txt', 'rb')
@@ -48,10 +48,10 @@ o = s3.Object('db-hw-bucket-18756895', 'test_upload.txt').put(Body=body)
 
 # Mark the binary object as publically readable
 response = s3.Object('db-hw-bucket-18756895', 'test_upload.txt').Acl().put(ACL='public-read')
-print()
+'''print()
 print(response)
 print()
-response = None
+response = None'''
 
 # Use account credentials to access dynamoDB
 dyndb = boto3.resource('dynamodb',
@@ -98,7 +98,7 @@ except:
 table.meta.client.get_waiter('table_exists').wait(TableName='DataTable-18756895')
 
 # Print number of items in table
-print('Items in table: ' + str(table.item_count))
+#print('Items in table: ' + str(table.item_count))
 
 # Upload files to the bucket
 with open('experiments.csv', 'r') as csvfile:
@@ -106,7 +106,7 @@ with open('experiments.csv', 'r') as csvfile:
 	next(csvf)
 	for item in csvf:
 		# Print the contents of the row
-		print(item)
+		#print(item)
 
 		# Open the datafile that corresponds to the url in the csv
 		body = open(item[4], 'rb')
@@ -140,10 +140,11 @@ response = table.get_item(
 
 
 # Print the response
-print()
+print('\n\nResponse:')
 print(response)
 print()
 
 # Extract the 'Item' from the reponse and print it.
 item = response['Item']
+print("Item retrieved from table:")
 print(item)
